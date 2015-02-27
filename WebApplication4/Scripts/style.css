@@ -1,0 +1,31 @@
+﻿body {
+}
+
+.sucessMSG
+{
+    text-align:center;
+    padding:5px;
+    width:250px;
+    display:block;
+    background-color:limegreen;
+}
+
+.sucessMSG:hover
+{
+    cursor:pointer;
+}
+
+.removeContactMSG
+{
+    text-align:center;
+    padding:5px;
+    width:250px;
+    display:block;
+    background-color:darkred;
+    color:white;
+}
+
+.removeContactMSG:hover
+{
+    cursor:pointer;
+}

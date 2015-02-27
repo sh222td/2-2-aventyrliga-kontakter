@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -34,14 +35,24 @@ namespace WebApplication4.Model
             return ContactDAL.GetContacts();
         }
 
-        public void GetContactsPageWise(int maximumRows, int startRowIndex, out int totalRowCount)
+        public IEnumerable<Contact> GetContactsPageWise(int maximumRows, int startRowIndex, out int totalRowCount)
         {
-            throw new System.NotImplementedException();
+            return ContactDAL.GetContactsPageWise(maximumRows, startRowIndex, out totalRowCount);
         }
 
         public void SaveContact(Contact contact)
         {
-            if (contact.ContactId == 0) // Ny post om CustomerId är 0!
+            var validationContext = new ValidationContext(contact);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(contact, validationContext, validationResults, true)) 
+            {            
+                // Kastar ett undatag om valideringen inte går igenom.
+                var ex = new ValidationException("Objektet klarade inte valideringen.");
+                ex.Data.Add("ValidationResults", validationResults);
+                throw ex;
+            }
+
+            if (contact.ContactId == 0) 
             {
                 ContactDAL.InsertContact(contact);
             }
